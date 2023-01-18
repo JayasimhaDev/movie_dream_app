@@ -7,73 +7,57 @@ import {
 	FlatList,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { MagnifyingGlassIcon, MoonIcon } from 'react-native-heroicons/outline';
+import { Bars3Icon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 
 const Navbar = () => {
-	 
+
 	let [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
 	});
-	
+  const navigation =useNavigation();
 	const [navbr, setNavbr] = useState([]);
-	const Navbritem = async ()=>{
+	const [navid, setNavid] = useState([]);
+	const Navbritem = async () => {
 		const response = await fetch(
 			'https://api.themoviedb.org/3/genre/movie/list?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US'
 		);
-		const data =await response.json();
+		const data = await response.json();
 		return setNavbr(data);
-	
-	}
+	};
 	useEffect(() => {
 		Navbritem();
-	},[]);
+	}, []);
 	return (
 		<View>
 			<View
 				style={{
 					flexDirection: 'row',
 					justifyContent: 'space-between',
-					padding: 10,
+					padding: 5,
 					alignItems: 'center',
+					marginBottm:1,
 				}}
 			>
+				<TouchableOpacity>
+					<Bars3Icon size="35" color="#01b4e4" />
+				</TouchableOpacity>
 				<TouchableOpacity>
 					<Text
 						style={{
 							fontFamily: 'Custom-Font',
-							fontSize: 30,
+							fontSize: 25,
 							color: '#01b4e4',
-							fontWeight: '800',
+							fontWeight: '600',
 						}}
 					>
-						JAYA
+						Movie Dream
 					</Text>
 				</TouchableOpacity>
-				<View
-					style={{
-						flexDirection: 'row',
-						height: 35,
-						alignItems: 'center',
-						backgroundColor: 'rgba(0,0,0,0.1)',
-						padding: 10,
-						width: 250,
-						justifyContent: 'space-between',
-						borderRadius: 5,
-					}}
-				>
-					<TextInput
-						placeholder="Search for Movies"
-						style={{
-							fontWeight: '600',
-							fontSize: 15,
-							fontFamily: 'Custom-Font',
-							height:20,
-							width:200,
-						}}
-					/>
+				<TouchableOpacity onPress={() => navigation.navigate('searchrepg')} style={{backgroundColor:"rgba(0,0,0,0.1)",padding:7,borderRadius:15}}>
 					<MagnifyingGlassIcon color="black" size="20" />
-				</View>
+				</TouchableOpacity>
 			</View>
 			<FlatList
 				horizontal
@@ -88,7 +72,14 @@ const Navbar = () => {
 								paddingRight: 5,
 							}}
 						>
-							<TouchableOpacity>
+							<TouchableOpacity
+								onPress={() => {
+									navigation.navigate('moviefind', {
+										id: item.item.id,
+										name: item.item.name,
+									});
+								}}
+							>
 								<Text
 									style={{
 										fontSize: 18,
@@ -106,7 +97,7 @@ const Navbar = () => {
 			/>
 		</View>
 	);
-}
+};
 
 export default Navbar;
 

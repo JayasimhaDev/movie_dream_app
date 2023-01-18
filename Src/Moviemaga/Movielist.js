@@ -92,11 +92,11 @@ const Movielist = ({ navigation }) => {
 	useEffect(() => {
 		nowplayingM();
 	}, []);
-
+ 
 	return (
-		<View>
+		<View style={{flex:1}}>
 			<Navbar />
-			<ScrollView style={{ marginBottom: 86 }}>
+			<ScrollView style={{ flex:1 }}>
 				<FlatList
 					horizontal
 					showsHorizontalScrollIndicator={false}
@@ -116,6 +116,8 @@ const Movielist = ({ navigation }) => {
 									navigation.navigate('moviebnrp', {
 										id: item.id,
 										array: user.results,
+										type:"movie",
+										setbackr: 2,
 									})
 								}
 							>
@@ -178,7 +180,13 @@ const Movielist = ({ navigation }) => {
 						>
 							Popular Starts
 						</Text>
-						<AdjustmentsVerticalIcon size="25" color="#01b4e4" />
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate('papularp', { name: 'Popular Starts' })
+							}
+						>
+							<AdjustmentsVerticalIcon size="25" color="#01b4e4" />
+						</TouchableOpacity>
 					</View>
 					<FlatList
 						horizontal
@@ -189,16 +197,31 @@ const Movielist = ({ navigation }) => {
 							return (
 								<TouchableOpacity
 									style={{
-										width: 80,
+										width: 84,
 										height: 100,
-										backgroundColor: 'rgba(0,0,0,0.1)',
 										padding: 5,
 										justifyContent: 'center',
 										textAlign: 'center',
-										marginHorizontal: 5,
+										marginHorizontal: 3,
 										alignSelf: 'center',
 										borderRadius: 10,
+										shadowColor: 'gray',
+										shadowOpacity: 0.26,
+										shadowOffset: { width: 0, height: 1 },
+										shadowRadius: 10,
+										elevation: 3,
+										backgroundColor: '#fff',
+										marginBottom:4
 									}}
+									onPress={() =>
+										navigation.navigate('papularprp', {
+											id: item.id,
+											array: nowplaying.results,
+										  sub: item.known_for,
+											pro :item.production_companies,
+											setBackp: 1,
+										})
+									}
 								>
 									<Image
 										source={{ uri: baseUrl + item.profile_path }}
@@ -263,7 +286,6 @@ const Movielist = ({ navigation }) => {
 									array: top.results,
 									category: 'top_rated',
 									name: 'Top Rated',
-									
 								})
 							}
 						>
@@ -281,16 +303,14 @@ const Movielist = ({ navigation }) => {
 									style={{
 										marginHorizontal: 3,
 									}}
-									onPress={() =>{
+									onPress={() => {
 										navigation.navigate('moviebnrp', {
 											id: item.id,
 											array: top.results,
-											setbackr:0
+											type:"movie",
+											setbackr: 2,
 										});
-
-									}
-									}
-									
+									}}
 								>
 									<Image
 										source={{ uri: baseUrl + item.poster_path }}
@@ -352,7 +372,8 @@ const Movielist = ({ navigation }) => {
 										navigation.navigate('moviebnrp', {
 											id: item.id,
 											array: popular.results,
-											setbackr: 0,
+											type:"movie",
+											setbackr: 2,
 										})
 									}
 								>
@@ -417,7 +438,8 @@ const Movielist = ({ navigation }) => {
 											id: item.id,
 											array: upcomming.results,
 											category: 'upcoming',
-											setbackr: 0,
+											type:"movie",
+											setbackr: 2,
 										})
 									}
 								>
@@ -483,7 +505,8 @@ const Movielist = ({ navigation }) => {
 											array: nowplaying.results,
 											category: 'now_playing',
 											name: 'Now Playnig',
-											setbackr:0
+											type:"movie",
+											setbackr: 2,
 										})
 									}
 								>

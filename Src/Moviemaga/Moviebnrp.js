@@ -11,9 +11,13 @@ import {
 } from 'react-native';
 import React ,{ useState, useEffect} from 'react'
 import { ArrowDownCircleIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon, FilmIcon, HandThumbUpIcon, PlayCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
+import { useFonts } from 'expo-font';
 
 
-const Moviebnrp = ({navigation,route,}) => {
+const Moviebnrp = ({navigation,route}) => {
+	let [fontsLoaded] = useFonts({
+		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
+	});
 	const baseUrl = 'https://image.tmdb.org/t/p/w500';
 
 	const [playmovie, setPlaymovie]=useState(false);
@@ -23,19 +27,21 @@ const Moviebnrp = ({navigation,route,}) => {
 	const [backr, setBackr] = useState(route.params.setbackr);
 	const Singlefilm = async (id) => {
 		const response = await fetch(
-			`https://api.themoviedb.org/3/movie/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US`
+			`https://api.themoviedb.org/3/${route.params.type}/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US`
 		);
 		const data = await response.json();
+
 		setGenres(data.genres)
 		setProdcom(data.production_companies)
 		return setSingmovie(data);
 	};
 	
-console.log(route.params.setbackr);
+
+
 	useEffect(() => {
-		Singlefilm(route.params.id);
+		Singlefilm(route.params.id,);
 	}, []);
-	console.log(route.params.id)
+	// console.log(route.params);
 	return (
 		<View style={{ flex: 1 }}>
 			<ScrollView>
@@ -44,7 +50,7 @@ console.log(route.params.setbackr);
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate('toprated', {
-									name: route.params.name,
+									name: 'Top Rated',
 									id: route.params.id,
 								})
 							}
@@ -52,21 +58,48 @@ console.log(route.params.setbackr);
 						>
 							<ArrowLeftIcon size="25" color="#01b4e4" />
 						</TouchableOpacity>
-					) : (
+					) : backr == 2 ? (
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate('movielist', {
 									name: route.params.name,
 									id: route.params.id,
+									array: genres.results,
 								})
 							}
 							style={{ position: 'absolute', zIndex: 1, top: 10, left: 6 }}
 						>
 							<ArrowLeftIcon size="25" color="#01b4e4" />
 						</TouchableOpacity>
-					)}
+					) : backr == 3 ? (
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate('papularprp', {
+									name: route.params.name,
+									id: route.params.id,
+								})
+							}
+							style={{ position: 'absolute', zIndex: 1, top: 10, left: 6 }}
+						>
+							<ArrowLeftIcon size="25" color="#01b4e4" />
+						</TouchableOpacity>
+					) : backr == 4 ? (
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate('moviefind', {
+									name: route.params.name,
+									id: route.params.id,
+								})
+							}
+							style={{ position: 'absolute', zIndex: 1, top: 10, left: 6 }}
+						>
+							<ArrowLeftIcon size="25" color="#01b4e4" />
+						</TouchableOpacity>
+					) : null}
 					<Image
-						source={{ uri: baseUrl + singmovie.backdrop_path }}
+						source={{
+							uri: `https://image.tmdb.org/t/p/w500/${singmovie.backdrop_path}`,
+						}}
 						style={{ width: '100%', height: 250 }}
 						// resizeMode="contain"
 					/>
@@ -249,38 +282,65 @@ console.log(route.params.setbackr);
 							Play
 						</Text>
 					</TouchableOpacity>
-					{/* <Modal
-						visible={playmovie}
-						transparent={true}
-						style={{
-							justifyContent: 'center',
-							alignSelf: 'center',
-							alignItems: 'center',
-							width: '90%',
-							height: 400,
-							backgroundColor: 'rgba(0,0,0,0.6)',
-						}}
-					>
-						<TouchableOpacity onPress={() => setPlaymovie(false)}>
-							<XCircleIcon size="30" color="#01b4e4" />
-						</TouchableOpacity>
+					<Modal visible={playmovie} transparent={true}>
 						<View
 							style={{
-								backgroundColor: 'rgba(0,0,0,0.6)',
+								justifyContent: 'center',
+								alignSelf: 'center',
+								alignItems: 'center',
+								width: '100%',
+								height: '100%',
+								backgroundColor: 'rgba(0,0,0,0.7)',
 							}}
 						>
-							<Image
-								resizeMode="cover"
+							<View
 								style={{
 									width: '90%',
-									height: 400,
+									height: 250,
+									shadowColor: 'gray',
+									shadowOpacity: 0.26,
+									shadowOffset: { width: 0, height: 2 },
+									shadowRadius: 10,
+									elevation: 3,
+									borderRadius: 12,
+									backgroundColor: '#01b4e4',
+									alignSelf: 'center',
+									marginTop: 10,
 								}}
-								source={{
-									uri: 'https://assets-7.mxplay.com/static/images/logo-dark.png',
-								}}
-							/>
+							>
+								<TouchableOpacity
+									onPress={() => setPlaymovie(false)}
+									style={{
+										backgroundColor: '#fff',
+										borderRadius: 20,
+										justifyContent: 'flex-end',
+										alignSelf: 'flex-end',
+									}}
+								>
+									<XCircleIcon size="30" color="#01b4e4" />
+								</TouchableOpacity>
+								<View style={{}}>
+									{/* <Image
+										source={require('../Assests/Images/photo-1602045486350-4e53a69865c6.avif')}
+										style={{ width: '100%', height: 250, borderRadius: 12 }}
+									/> */}
+									<Text
+										style={{
+											fontFamily: 'Custom-Font',
+											fontSize: 30,
+											fontWeight: '600',
+											color: '#fff',
+											alignSelf:"center",
+											textAlign:"center",
+											marginTop:50,
+										}}
+									>
+										Coming Soon
+									</Text>
+								</View>
+							</View>
 						</View>
-					</Modal> */}
+					</Modal>
 					<TouchableOpacity
 						style={{
 							justifyContent: 'center',

@@ -4,27 +4,51 @@ import {
 	Text,
 	View,
 	TouchableOpacity,
-	Image
+	Image,
+	ActivityIndicator
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
+import { useFonts } from 'expo-font';
 
-const Toprated = ({navigation,route}) => {
+const Toprated = ({ navigation, route},id) => {
+	let [fontsLoaded] = useFonts({
+		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
+	});
 	const baseUrl = 'https://image.tmdb.org/t/p/w500';
 	const [top, setTop] = useState([]);
-	const [pageno,setPageno] =useState(1)
-	const topRated = async (pg) => { 
+	const [pageno, setPageno] = useState(1);
+	const [isLoading, setIsLoading] = useState(false);
+	const [msarray, setMsarray]=useState(route.params.category)
+	const topRated = async (pgn) => {
+		setIsLoading(true);
 		const respone = await fetch(
-			`https://api.themoviedb.org/3/movie/${route.params.category}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=1`
+			`https://api.themoviedb.org/3/movie/${msarray}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=${pgn}`
 		);
 		const data = await respone.json();
-		return setTop(data);
+			setTop([...top, ...data.results]);
+			setIsLoading(false);
+			setPageno(pageno + 1);
+		
+	};
+	const renderLoder = () => {
+		return isLoading ? (
+			<View>
+				<ActivityIndicator size="large" color="red" />
+			</View>
+		) : null;
+	};
+	
+	const loadmoreItem = () => {
+		if (!isLoading) {
+			topRated(pageno+1);
+			setPageno(pageno + 1);
+		}
 	};
 	useEffect(() => {
-		topRated();
-	}, []);
- console.log(top);
- console.log(route.params.id);
+		topRated(pageno);
+	}, [pageno]);
+
 	return (
 		<View>
 			<View
@@ -33,6 +57,7 @@ const Toprated = ({navigation,route}) => {
 					justifyContent: 'space-between',
 					padding: 10,
 				}}
+				key={id}
 			>
 				<TouchableOpacity onPress={() => navigation.navigate('movielist')}>
 					<ArrowLeftIcon size="30" color="#01b4e4" />
@@ -52,20 +77,22 @@ const Toprated = ({navigation,route}) => {
 				<FlatList
 					numColumns={3}
 					showsVerticalScrollIndicator={false}
-					ListFooterComponent={() => <Text>The End!</Text>}
-					data={top.results}
-					keyExtractor={(val) => val.id}
-					renderItem={({ item }) => {
+					ListFooterComponent={renderLoder}
+					data={top}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item}) => {
 						return (
 							<TouchableOpacity
 								style={{
 									marginHorizontal: 2,
 									marginVertical: 2,
+									flexGrow: 1,
 								}}
 								onPress={() =>
 									navigation.navigate('moviebnrp', {
 										id: item.id,
-										array: top.results,
+										array: top,
+										type: 'movie',
 										setbackr: 1,
 									})
 								}
@@ -83,11 +110,13 @@ const Toprated = ({navigation,route}) => {
 							</TouchableOpacity>
 						);
 					}}
+					onEndReached={loadmoreItem}
+					onEndReachedThreshold={0.5}
 				/>
 			</View>
 		</View>
 	);
-}
+};
 
 export default Toprated;
 
