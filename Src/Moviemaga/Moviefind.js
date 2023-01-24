@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 import Navbar from './Navbar';
+import { StatusBar } from 'expo-status-bar';
 
 const Moviefind = ({ navigation, route }) => {
 	const baseUrl = 'https://image.tmdb.org/t/p/w500';
@@ -45,15 +46,16 @@ if(!isLoading){
 	}, [pagea]);
 	
 	return (
-		<View style={{flex:1}}>
-			<View style={{flex:1}}>
+		<View style={{ flex: 1 }}>
+			{/* <StatusBar /> */}
+			<View style={{ flex: 1 }}>
 				<View
 					style={{
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						padding: 3,
-						paddingLeft:5,
-						paddingRight:5,
+						paddingLeft: 5,
+						paddingRight: 5,
 					}}
 				>
 					<TouchableOpacity onPress={() => navigation.navigate('movielist')}>
@@ -74,6 +76,8 @@ if(!isLoading){
 					<FlatList
 						numColumns={3}
 						showsVerticalScrollIndicator={false}
+						initialNumToRender={10}
+						refreshing={isLoading}
 						ListFooterComponent={foterCount}
 						data={mvfind}
 						keyExtractor={(val) => val.id}

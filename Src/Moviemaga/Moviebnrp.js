@@ -12,6 +12,7 @@ import {
 import React ,{ useState, useEffect} from 'react'
 import { ArrowDownCircleIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon, FilmIcon, HandThumbUpIcon, PlayCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 
 const Moviebnrp = ({navigation,route}) => {
@@ -44,6 +45,7 @@ const Moviebnrp = ({navigation,route}) => {
 	// console.log(route.params);
 	return (
 		<View style={{ flex: 1 }}>
+			{/* <StatusBar  /> */}
 			<ScrollView>
 				<View style={{ position: 'relative' }}>
 					{backr == 1 ? (
@@ -87,6 +89,18 @@ const Moviebnrp = ({navigation,route}) => {
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate('moviefind', {
+									name: route.params.name,
+									id: route.params.id,
+								})
+							}
+							style={{ position: 'absolute', zIndex: 1, top: 10, left: 6 }}
+						>
+							<ArrowLeftIcon size="25" color="#01b4e4" />
+						</TouchableOpacity>
+					) : backr == 5 ? (
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate('searchrepg', {
 									name: route.params.name,
 									id: route.params.id,
 								})
@@ -330,9 +344,9 @@ const Moviebnrp = ({navigation,route}) => {
 											fontSize: 30,
 											fontWeight: '600',
 											color: '#fff',
-											alignSelf:"center",
-											textAlign:"center",
-											marginTop:50,
+											alignSelf: 'center',
+											textAlign: 'center',
+											marginTop: 50,
 										}}
 									>
 										Coming Soon

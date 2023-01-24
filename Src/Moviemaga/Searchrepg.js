@@ -6,6 +6,8 @@ import {
 	TouchableOpacity,
 	View,
 	FlatList,
+	Image,
+	ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
@@ -14,74 +16,42 @@ import {
 } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 
-const Searchrepg = ({text}) => {
+const Searchrepg = () => {
+	const baseUrl = 'https://image.tmdb.org/t/p/w500';
 	let [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
 	});
  const navigation = useNavigation();
 	const [search, setSearch] = useState('');
-	const [filteredDataSource, setFilteredDataSource] = useState([]);
-	const [masterDataSource, setMasterDataSource] = useState([]);
-  
-	useEffect(() => {
-		fetch(
-			'https://api.themoviedb.org/3/search/multi?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=1&include_adult=false'
-		)
-			.then((response) => response.json())
-			.then((responseJson) => {
-				setFilteredDataSource(responseJson);
-				setMasterDataSource(responseJson);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
+	const [query, setQuery] = useState('');
+	const [movies, setMovies] = useState([]);
+   
 
-	const searchFilterFunction = (text) => {
-		if (text) {
-			const newData = masterDataSource.filter(function (item) {
-				const itemData = item.title
-					? item.title.toUpperCase()
-					: ''.toUpperCase();
-				const textData = text.toUpperCase();
-				return itemData.indexOf(textData) > -1;
-			});
-			setFilteredDataSource(newData);
-			setSearch(text);
-		} else {
-			setFilteredDataSource(masterDataSource);
-			setSearch(text);
+	
+		const fetchMovies = async (search)=> {
+			const response = await fetch(
+				`https://api.themoviedb.org/3/search/movie?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=1&include_adult=false&query=${search}`
+			);
+			const data = await response.json();
+			const moviesWithOnlyPosters =
+				data.results.filter((item) => (item.poster_path != null ? item : null));
+			setMovies(moviesWithOnlyPosters);
 		}
-	};
-	const ItemView = ({ item }) => {
-		return (
-			<Text style={styles.itemStyle} onPress={() => getItem(item)}>
-				{item.id}
-				{'.'}
-				{item.title.toUpperCase()}
-			</Text>
-		);
-	};
+    
+	const updateSearch=(e) =>{
+		setSearch(e);
+	}
 
-	const ItemSeparatorView = () => {
-		return (
-			<View
-				style={{
-					height: 0.5,
-					width: '100%',
-					backgroundColor: '#C8C8C8',
-				}}
-			/>
-		);
-	};
+	const getQuery=(e) =>{
+		fetchMovies(search);
+	}
 
-	const getItem = (item) => {
-		alert('Id : ' + item.id + ' Title : ' + item.title);
-	};
-
+		
 	return (
 		<View>
+			{/* <StatusBar  /> */}
 			<View
 				style={{
 					flexDirection: 'row',
@@ -107,8 +77,8 @@ const Searchrepg = ({text}) => {
 				>
 					<TextInput
 						placeholder="Search for Movies"
-						onChangeText={(text) => searchFilterFunction(text)}
-						onClear={(text) => searchFilterFunction('')}
+						value={search}
+						onChangeText={updateSearch}
 						style={{
 							fontWeight: '600',
 							fontSize: 15,
@@ -116,17 +86,52 @@ const Searchrepg = ({text}) => {
 							height: 20,
 							width: 200,
 						}}
-						value={search}
 					/>
-					<MagnifyingGlassIcon color="black" size="20" />
+					<TouchableOpacity onPress={getQuery}>
+						<MagnifyingGlassIcon color="black" size="20" />
+					</TouchableOpacity>
 				</View>
 			</View>
-			<FlatList
-				data={filteredDataSource}
-				keyExtractor={(item, index) => index.toString()}
-				ItemSeparatorComponent={ItemSeparatorView}
-				renderItem={ItemView}
-			/>
+			<View>
+				<FlatList
+					numColumns={3}
+					showsHorizontalScrollIndicator={false}
+					data={movies}
+					keyExtractor={(val) => val.id}
+					renderItem={({ item }) => {
+						return (
+							<ScrollView style={{ flex: 1 }}>
+								<TouchableOpacity
+									style={{
+										marginHorizontal: 2,
+										marginVertical: 2,
+									}}
+									onPress={() =>
+										navigation.navigate('moviebnrp', {
+											id: item.id,
+											array: movies,
+											type: 'movie',
+											setbackr: 5,
+										})
+									}
+								>
+									<Image
+										source={{ uri: baseUrl + item.poster_path }}
+										style={{
+											width: 114,
+											height: 170,
+											borderRadius: 3,
+											alignSelf: 'center',
+											zIndex: 100,
+										}}
+										// resizeMode="contain"
+									/>
+								</TouchableOpacity>
+							</ScrollView>
+						);
+					}}
+				/>
+			</View>
 		</View>
 	);
 }

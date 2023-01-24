@@ -12,7 +12,8 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar';
 import { useFonts } from 'expo-font';
 import { AdjustmentsVerticalIcon } from 'react-native-heroicons/outline';
-
+import Footerbar from './Footerbar';
+import { StatusBar } from 'expo-status-bar';
 
 
 const Movielist = ({ navigation }) => {
@@ -94,9 +95,11 @@ const Movielist = ({ navigation }) => {
 	}, []);
  
 	return (
-		<View style={{flex:1}}>
+		<View style={{ flex: 1 }}>
+			{/* <StatusBar
+			/> */}
 			<Navbar />
-			<ScrollView style={{ flex:1 }}>
+			<ScrollView style={{ flex: 1, marginTop: 5 }}>
 				<FlatList
 					horizontal
 					showsHorizontalScrollIndicator={false}
@@ -116,7 +119,7 @@ const Movielist = ({ navigation }) => {
 									navigation.navigate('moviebnrp', {
 										id: item.id,
 										array: user.results,
-										type:"movie",
+										type: 'movie',
 										setbackr: 2,
 									})
 								}
@@ -125,7 +128,7 @@ const Movielist = ({ navigation }) => {
 									source={{ uri: baseUrl + item.backdrop_path }}
 									style={{
 										width: 350,
-										height: 240,
+										height: 220,
 										justifyContent: 'center',
 										alignItems: 'center',
 										alignSelf: 'center',
@@ -149,7 +152,7 @@ const Movielist = ({ navigation }) => {
 										style={{
 											color: '#fff',
 											fontSize: 17,
-											fontWeight: '700',
+											fontWeight: '500',
 											fontFamily: 'Custom-Font',
 											padding: 5,
 											textAlign: 'left',
@@ -211,14 +214,14 @@ const Movielist = ({ navigation }) => {
 										shadowRadius: 10,
 										elevation: 3,
 										backgroundColor: '#fff',
-										marginBottom:4
+										marginBottom: 4,
 									}}
 									onPress={() =>
 										navigation.navigate('papularprp', {
 											id: item.id,
 											array: nowplaying.results,
-										  sub: item.known_for,
-											pro :item.production_companies,
+											sub: item.known_for,
+											pro: item.production_companies,
 											setBackp: 1,
 										})
 									}
@@ -307,7 +310,7 @@ const Movielist = ({ navigation }) => {
 										navigation.navigate('moviebnrp', {
 											id: item.id,
 											array: top.results,
-											type:"movie",
+											type: 'movie',
 											setbackr: 2,
 										});
 									}}
@@ -372,7 +375,7 @@ const Movielist = ({ navigation }) => {
 										navigation.navigate('moviebnrp', {
 											id: item.id,
 											array: popular.results,
-											type:"movie",
+											type: 'movie',
 											setbackr: 2,
 										})
 									}
@@ -438,7 +441,7 @@ const Movielist = ({ navigation }) => {
 											id: item.id,
 											array: upcomming.results,
 											category: 'upcoming',
-											type:"movie",
+											type: 'movie',
 											setbackr: 2,
 										})
 									}
@@ -505,7 +508,7 @@ const Movielist = ({ navigation }) => {
 											array: nowplaying.results,
 											category: 'now_playing',
 											name: 'Now Playnig',
-											type:"movie",
+											type: 'movie',
 											setbackr: 2,
 										})
 									}
@@ -526,6 +529,7 @@ const Movielist = ({ navigation }) => {
 					/>
 				</View>
 			</ScrollView>
+			<Footerbar />
 		</View>
 	);
 };

@@ -11,6 +11,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 const Papularp = ({ navigation, route }) => {
 	let [fontsLoaded] = useFonts({
@@ -52,6 +53,7 @@ const Papularp = ({ navigation, route }) => {
 	
 	return (
 		<View style={{ flex: 1 }}>
+			{/* <StatusBar /> */}
 			<View
 				style={{
 					flexDirection: 'row',
@@ -112,7 +114,7 @@ const Papularp = ({ navigation, route }) => {
 								onPress={() =>
 									navigation.navigate('papularprp', {
 										id: item.id,
-										array: top.results,
+										array: topt.results,
 										sub: item.known_for,
 										setBackp: 0,
 									})

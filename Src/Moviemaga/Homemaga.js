@@ -3,7 +3,7 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowRightIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
-
+import { StatusBar } from 'expo-status-bar';
 
 const Homemaga = ({navigation}) => {
 let [fontsLoaded] = useFonts({
@@ -15,6 +15,7 @@ let [fontsLoaded] = useFonts({
 			colors={['#0d253f', '#01b4e4', '#90cea1']}
 			style={styles.brviewcolr}
 		>
+			{/* <StatusBar  /> */}
 			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
 				<View
 					style={{

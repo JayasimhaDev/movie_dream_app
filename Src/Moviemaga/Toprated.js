@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 const Toprated = ({ navigation, route},id) => {
 	let [fontsLoaded] = useFonts({
@@ -51,6 +52,7 @@ const Toprated = ({ navigation, route},id) => {
 
 	return (
 		<View>
+			{/* <StatusBar /> */}
 			<View
 				style={{
 					flexDirection: 'row',
@@ -77,10 +79,12 @@ const Toprated = ({ navigation, route},id) => {
 				<FlatList
 					numColumns={3}
 					showsVerticalScrollIndicator={false}
+					initialNumToRender={10}
+					refreshing={isLoading}
 					ListFooterComponent={renderLoder}
 					data={top}
 					keyExtractor={(item) => item.id}
-					renderItem={({ item}) => {
+					renderItem={({ item }) => {
 						return (
 							<TouchableOpacity
 								style={{

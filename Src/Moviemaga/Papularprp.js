@@ -15,6 +15,7 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 
+
 const Papularprp = ({navigation,route}) => {
 	let [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
@@ -38,6 +39,7 @@ const Papularprp = ({navigation,route}) => {
 
 	return (
 		<ScrollView style={{ flex: 1 }}>
+			{/* <StatusBar  /> */}
 			<View style={{ position: 'relative' }}>
 				<Image
 					source={{ uri: baseUrl + paplrary.profile_path }}
