@@ -76,7 +76,12 @@ const Navbar = () => {
 						}}
 					>
 						<View
-							style={{ width: '80%', height: '100%', backgroundColor: '#fff' }}
+							style={{
+								width: '80%',
+								height: '100%',
+								backgroundColor: '#fff',
+								justifyContent: 'space-between',
+							}}
 						>
 							<View
 								style={{
@@ -142,6 +147,7 @@ const Navbar = () => {
 										alignItems: 'center',
 										justifyContent: 'flex-start',
 									}}
+									onPress={() => navigation.navigate('movielist')}
 								>
 									<HomeIcon size="25" color="black" />
 									<Text
@@ -163,6 +169,7 @@ const Navbar = () => {
 										justifyContent: 'flex-start',
 										marginTop: 15,
 									}}
+									onPress={() =>{ navigation.navigate('sidenavp'); setUserpg(false)}}
 								>
 									<RectangleGroupIcon size="25" color="black" />
 									<Text
@@ -341,6 +348,18 @@ const Navbar = () => {
 										Exit
 									</Text>
 								</TouchableOpacity>
+								<Text
+									style={{
+										fontFamily: 'Custom-Font',
+										fontSize: 13,
+										color: 'black',
+										fontWeight: '600',
+										paddingLeft: 10,
+										marginTop: 50,
+									}}
+								>
+									Designed by Jaya
+								</Text>
 							</View>
 						</View>
 					</View>

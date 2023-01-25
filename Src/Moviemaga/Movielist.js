@@ -99,7 +99,7 @@ const Movielist = ({ navigation }) => {
 			{/* <StatusBar
 			/> */}
 			<Navbar />
-			<ScrollView style={{ flex: 1, marginTop: 5 }}>
+			<ScrollView style={{ flex: 1, marginTop: 5,  }}>
 				<FlatList
 					horizontal
 					showsHorizontalScrollIndicator={false}
@@ -113,7 +113,7 @@ const Movielist = ({ navigation }) => {
 									position: 'relative',
 									alignItems: 'center',
 									marginHorizontal: 5,
-									borderRadius: 10,
+									borderRadius: 10
 								}}
 								onPress={() =>
 									navigation.navigate('moviebnrp', {
@@ -127,7 +127,7 @@ const Movielist = ({ navigation }) => {
 								<Image
 									source={{ uri: baseUrl + item.backdrop_path }}
 									style={{
-										width: 350,
+										width:350,
 										height: 220,
 										justifyContent: 'center',
 										alignItems: 'center',
@@ -143,7 +143,7 @@ const Movielist = ({ navigation }) => {
 										width: 350,
 										height: 55,
 										alignItems: 'center',
-										backgroundColor: 'rgba(0,0,0,0.4)',
+										backgroundColor: 'rgba(0,0,0,0.7)',
 										borderBottomRightRadius: 5,
 										borderBottomLeftRadius: 5,
 									}}

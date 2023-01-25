@@ -80,6 +80,7 @@ const Papularp = ({ navigation, route }) => {
 				numColumns={3}
 				showsVerticalScrollIndicator={false}
 				ListFooterComponent={renderData}
+				columnWrapperStyle={{justifyContent:"space-around"}}
 				data={topt}
 				keyExtractor={(val) => val.id}
 				renderItem={({ item }) => {

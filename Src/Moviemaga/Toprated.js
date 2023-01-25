@@ -79,6 +79,7 @@ const Toprated = ({ navigation, route},id) => {
 				<FlatList
 					numColumns={3}
 					showsVerticalScrollIndicator={false}
+					columnWrapperStyle={{ justifyContent: 'space-around' }}
 					initialNumToRender={10}
 					refreshing={isLoading}
 					ListFooterComponent={renderLoder}

@@ -14,6 +14,7 @@ import Papularp from './Src/Moviemaga/Papularp';
 import Papularprp from './Src/Moviemaga/Papularprp';
 import Moviefind from './Src/Moviemaga/Moviefind';
 import Searchrepg from './Src/Moviemaga/Searchrepg';
+import Sidenavp from './Src/Moviemaga/Sidenavp';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +95,16 @@ const App = () => {
 				<Stack.Screen
 					name="searchrepg"
 					component={Searchrepg}
+					options={{
+						headerShown: false,
+						statusBarHidden: false,
+						statusBarStyle: 'dark',
+						statusBarColor: 'white',
+					}}
+				/>
+				<Stack.Screen
+					name="sidenavp"
+					component={Sidenavp}
 					options={{
 						headerShown: false,
 						statusBarHidden: false,

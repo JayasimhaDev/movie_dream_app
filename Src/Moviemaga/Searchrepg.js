@@ -95,7 +95,9 @@ const Searchrepg = () => {
 			<View>
 				<FlatList
 					numColumns={3}
+					columnWrapperStyle={{ justifyContent: 'space-around' }}
 					showsHorizontalScrollIndicator={false}
+					// style={{ flex: 1 }}
 					data={movies}
 					keyExtractor={(val) => val.id}
 					renderItem={({ item }) => {

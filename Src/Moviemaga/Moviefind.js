@@ -75,6 +75,7 @@ if(!isLoading){
 				<View>
 					<FlatList
 						numColumns={3}
+						columnWrapperStyle={{ justifyContent: 'space-around' }}
 						showsVerticalScrollIndicator={false}
 						initialNumToRender={10}
 						refreshing={isLoading}
