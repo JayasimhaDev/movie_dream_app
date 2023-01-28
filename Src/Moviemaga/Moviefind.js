@@ -80,7 +80,7 @@ if(!isLoading){
 						initialNumToRender={10}
 						refreshing={isLoading}
 						ListFooterComponent={foterCount}
-						data={mvfind}
+						data={mvfind} 
 						keyExtractor={(val) => val.id}
 						renderItem={({ item }) => {
 							return (

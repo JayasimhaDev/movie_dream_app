@@ -16,98 +16,124 @@ import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-const Sidenavp = () => {
+const Sidenavpj = () => {
 	let [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
 	});
-	 const navigation = useNavigation();
-	 const [userEmail, setUserEmail] = useState('');
-		const [userPassword, setUserPassword] = useState('');
-		const [loading, setLoading] = useState(false);
-		const [errortext, setErrortext] = useState('');
-		const passwordInputRef = createRef();
-
-const handleSubmitPress = () => {
-setErrortext('');
-if (!userEmail) {
-alert('Please fill Email');
-return;
-}
-if (!userPassword) {
-alert('Please fill Password');
-return;
-}
-setLoading(true);
-let dataToSend = {email: userEmail, password: userPassword};
-let formBody = [];
-for (let key in dataToSend) {
-let encodedKey = encodeURIComponent(key);
-let encodedValue = encodeURIComponent(dataToSend[key]);
-formBody.push(encodedKey + '=' + encodedValue);
-}
-formBody = formBody.join('&');
-
-fetch('http://localhost:3000/api/user/login', {
-method: 'POST',
-body: formBody,
-headers: {
-'Content-Type':
-'application/x-www-form-urlencoded;charset=UTF-8',
-},
-})
-.then((response) => response.json())
-.then((responseJson) => {
-setLoading(false);
-console.log(responseJson);
-if (responseJson.status === 'success') {
-AsyncStorage.setItem('user_id', responseJson.data.email);
-console.log(responseJson.data.email);
-navigation.replace('DrawerNavigationRoutes');
-} else {
-setErrortext(responseJson.msg);
-console.log('Please check your email id or password');
-}
-})
-.catch((error) => {
-setLoading(false);
-console.error(error);
-});
-};
-
-	return (
-		<View>
+	const navigation = useNavigation();
+	const [userEmail, setUserEmail] = useState('');
+	const [userPassword, setUserPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [errortext, setErrortext] = useState('');
+	const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+	const emailInputRef = createRef();
+	const passwordInputRef = createRef();
+	const handleSubmitButton = () => {
+		if (!userEmail) {
+			alert('Please fill Email');
+			return;
+		}
+		if (!userPassword) {
+			alert('Please fill Password');
+			return;
+		}
+		setLoading(true);
+		var dataToSend = {
+			email: userEmail,
+			password: userPassword,
+		};
+		console.log(dataToSend);
+		var formBody = [];
+		for (var key in dataToSend) {
+			var encodedKey = encodeURIComponent(key);
+			var encodedValue = encodeURIComponent(dataToSend[key]);
+			formBody.push(encodedKey + '=' + encodedValue);
+		}
+		formBody = formBody.join('&');
+		fetch('http://10.0.2.2:3000/api/user/register', {
+			method: 'POST',
+			body: formBody,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+			},
+		})
+			.then((response) => response.json())
+			.then((responseJson) => {
+				setLoading(false);
+				console.log(responseJson);
+				if (responseJson.status === 'success') {
+					setIsRegistraionSuccess(true);
+					console.log('Registration Successful. Please Login to proceed');
+				} else {
+					setErrortext(responseJson.msg);
+				}
+			})
+			.catch((error) => {
+				setLoading(false);
+				console.error(error);
+			});
+	};
+	if (isRegistraionSuccess) {
+		return (
 			<View
 				style={{
-					padding: 10,
-					alignSelf: 'center',
-					textAlign: 'center',
+					flex: 1,
+					backgroundColor: '#307ecc',
+					justifyContent: 'center',
 				}}
 			>
-				{/* <TouchableOpacity
-					onPress={() => {
-						navigation.navigate('movielist');
+				<Image
+					source={{
+						uri: 'https://image.similarpng.com/very-thumbnail/2021/08/Green-check-mark-icon.png',
 					}}
-				>
-					<ArrowLeftIcon size="30" color="#01b4e4" />
-				</TouchableOpacity> */}
+					style={{
+						height: 150,
+						resizeMode: 'contain',
+						alignSelf: 'center',
+					}}
+				/>
 				<Text
 					style={{
-						fontFamily: 'Custom-Font',
-						fontSize: 30,
-						color: '#01b4e4',
-						fontWeight: '600',
+						color: 'white',
 						textAlign: 'center',
+						fontSize: 18,
+						padding: 30,
 					}}
 				>
-					Welcome to Movie Dream
+					Registration Successful
 				</Text>
+				<TouchableOpacity
+					style={{
+						backgroundColor: '#7DE24E',
+						borderWidth: 0,
+						color: '#FFFFFF',
+						borderColor: '#7DE24E',
+						height: 40,
+						alignItems: 'center',
+						borderRadius: 30,
+						marginLeft: 35,
+						marginRight: 35,
+						marginTop: 20,
+						marginBottom: 20,
+					}}
+					activeOpacity={0.5}
+					onPress={() =>navigation.navigate('sidenavp')}
+				>
+					<Text style={{ color: '#FFFFFF', paddingVertical: 10, fontSize: 16 }}>
+						Login Now
+					</Text>
+				</TouchableOpacity>
 			</View>
+		);
+	}
+	return (
+		<View>
 			<View>
 				<Image
 					style={{
 						width: '90%',
 						height: 230,
-						marginTop: 20,
+						marginTop: 40,
 						alignSelf: 'center',
 						borderRadius: 10,
 					}}
@@ -141,11 +167,12 @@ console.error(error);
 						}}
 						placeholder="Enter Your Email"
 						onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+						ref={emailInputRef}
 						onSubmitEditing={() =>
 							passwordInputRef.current && passwordInputRef.current.focus()
 						}
 						blurOnSubmit={false}
-					/>
+					></TextInput>
 				</View>
 				<View
 					style={{
@@ -173,11 +200,46 @@ console.error(error);
 						secureTextEntry={true}
 						ref={passwordInputRef}
 						onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+						onSubmitEditing={() =>
+							ageInputRef.current && ageInputRef.current.focus()
+						}
+						blurOnSubmit={false}
+					/>
+				</View>
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						marginHorizontal: 50,
+						borderWidth: 2,
+						marginTop: 20,
+						paddingHorizontal: 10,
+						borderColor: '#01b4e4',
+						borderRadius: 23,
+						paddingVertical: 2,
+						height: 40,
+					}}
+				>
+					<ShieldCheckIcon size="20" color="#01b4e4" />
+					<TextInput
+						style={{
+							paddingHorizontal: 10,
+							height: 30,
+							width: 200,
+							fontFamily: 'Custom-Font',
+						}}
+						placeholder="Confirm Your Password"
+						secureTextEntry={true}
+						ref={passwordInputRef}
+						onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+						onSubmitEditing={() =>
+							ageInputRef.current && ageInputRef.current.focus()
+						}
 						blurOnSubmit={false}
 					/>
 				</View>
 				{errortext != '' ? (
-					<Text>{errortext}</Text>
+					<Text style={styles.errorTextStyle}>{errortext}</Text>
 				) : null}
 				<View>
 					<TouchableOpacity
@@ -195,11 +257,8 @@ console.error(error);
 							alignSelf: 'center',
 							backgroundColor: '#01b4e4',
 						}}
-						onPress={() => {
-							navigation.navigate('appnavigation');
-						}}
-						// onPress={handleSubmitPress}
-						>
+						onPress={handleSubmitButton}
+					>
 						<Text
 							style={{
 								color: '#fff',
@@ -209,7 +268,7 @@ console.error(error);
 								alignSelf: 'center',
 							}}
 						>
-							Login
+							Register
 						</Text>
 					</TouchableOpacity>
 				</View>
@@ -257,9 +316,9 @@ console.error(error);
 								marginRight: 5,
 							}}
 						>
-							Don't have an account ?
+							Already have an account ?
 						</Text>
-						<TouchableOpacity onPress={() => navigation.navigate('sidenavpj')}>
+						<TouchableOpacity onPress={() => navigation.navigate('sidenavp')}>
 							<Text
 								style={{
 									color: '#01b4e4',
@@ -268,7 +327,7 @@ console.error(error);
 									fontFamily: 'Custom-Font',
 								}}
 							>
-								Sing up
+								Login
 							</Text>
 						</TouchableOpacity>
 					</View>
@@ -278,6 +337,6 @@ console.error(error);
 	);
 };
 
-export default Sidenavp;
+export default Sidenavpj;
 
 const styles = StyleSheet.create({});
