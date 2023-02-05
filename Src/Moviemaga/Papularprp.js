@@ -32,11 +32,11 @@ const Papularprp = ({navigation,route}) => {
 		setRoutary(route.params.sub);
 		return setPaplrary(data);
 	}
-	// console.log(paplrary);
+	
 	useEffect(() => {
 		paplryfetch(route.params.id)
 	}, []);
-
+     
 	return (
 		<ScrollView style={{ flex: 1 }}>
 			{/* <StatusBar  /> */}
@@ -73,7 +73,20 @@ const Papularprp = ({navigation,route}) => {
 					>
 						<ArrowLeftIcon size="25" color="#01b4e4" />
 					</TouchableOpacity>
-				) : null}
+				) : backp == 2 ? (
+					<TouchableOpacity
+						style={{ position: 'absolute', zIndex: 1, top: 10, left: 6 }}
+						onPress={() =>
+							navigation.navigate('moviebnrp', {
+								name: 'Popular Starts',
+								array:route.params.array,
+								
+							})
+						}
+					>
+						<ArrowLeftIcon size="25" color="#01b4e4" />
+					</TouchableOpacity>
+				):null}
 			</View>
 			<View style={{ padding: 10 }}>
 				<View style={{ flexDirection: 'row' }}>

@@ -45,7 +45,7 @@ const Movielist = ({ navigation }) => {
 	useEffect(() => {
 		peopleData();
 	}, []);
-
+   
 	const [top, setTop] = useState([]);
 	const topRated = async () => {
 		const respone = await fetch(
@@ -96,8 +96,6 @@ const Movielist = ({ navigation }) => {
  
 	return (
 		<View style={{ flex: 1 }}>
-			{/* <StatusBar
-			/> */}
 			<Navbar />
 			<ScrollView style={{ flex: 1, marginTop: 5,  }}>
 				<FlatList
@@ -231,7 +229,7 @@ const Movielist = ({ navigation }) => {
 										style={{
 											width: 50,
 											height: 50,
-											borderRadius: 20,
+											borderRadius: 10,
 											alignSelf: 'center',
 										}}
 										resizeMode="cover"
@@ -288,6 +286,7 @@ const Movielist = ({ navigation }) => {
 								navigation.navigate('toprated', {
 									array: top.results,
 									category: 'top_rated',
+									type: 'movie',
 									name: 'Top Rated',
 								})
 							}
@@ -353,6 +352,7 @@ const Movielist = ({ navigation }) => {
 								navigation.navigate('toprated', {
 									array: popular.results,
 									category: 'popular',
+									type: 'movie',
 									name: 'Popular',
 								})
 							}
@@ -418,6 +418,7 @@ const Movielist = ({ navigation }) => {
 								navigation.navigate('toprated', {
 									array: upcomming.results,
 									category: 'upcoming',
+									type: 'movie',
 									name: 'Up Comming',
 								})
 							}
@@ -484,6 +485,7 @@ const Movielist = ({ navigation }) => {
 								navigation.navigate('toprated', {
 									array: nowplaying.results,
 									category: 'now_playing',
+									type: 'movie',
 									name: 'Now Playnig',
 								})
 							}

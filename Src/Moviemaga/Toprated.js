@@ -21,10 +21,11 @@ const Toprated = ({ navigation, route},id) => {
 	const [pageno, setPageno] = useState(1);
 	const [isLoading, setIsLoading] = useState(false);
 	const [msarray, setMsarray]=useState(route.params.category)
+	const [type, setType]=useState(route.params.type)
 	const topRated = async (pgn) => {
 		setIsLoading(true);
 		const respone = await fetch(
-			`https://api.themoviedb.org/3/movie/${msarray}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=${pgn}`
+			`https://api.themoviedb.org/3/${type}/${msarray}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=${pgn}`
 		);
 		const data = await respone.json();
 			setTop([...top, ...data.results]);
@@ -97,6 +98,7 @@ const Toprated = ({ navigation, route},id) => {
 									navigation.navigate('moviebnrp', {
 										id: item.id,
 										array: top,
+										title:item.title,
 										type: 'movie',
 										setbackr: 1,
 									})

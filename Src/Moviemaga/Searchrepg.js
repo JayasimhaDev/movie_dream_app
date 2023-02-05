@@ -32,7 +32,7 @@ const Searchrepg = () => {
 	
 		const fetchMovies = async (search)=> {
 			const response = await fetch(
-				`https://api.themoviedb.org/3/search/movie?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=1&include_adult=false&query=${search}`
+				`https://api.themoviedb.org/3/search/multi?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=1&include_adult=false&query=${search}`
 			);
 			const data = await response.json();
 			const moviesWithOnlyPosters =
@@ -48,7 +48,7 @@ const Searchrepg = () => {
 		fetchMovies(search);
 	}
 
-		
+	
 	return (
 		<View>
 			{/* <StatusBar  /> */}
@@ -112,7 +112,7 @@ const Searchrepg = () => {
 										navigation.navigate('moviebnrp', {
 											id: item.id,
 											array: movies,
-											type: 'movie',
+											type: item.media_type,
 											setbackr: 5,
 										})
 									}

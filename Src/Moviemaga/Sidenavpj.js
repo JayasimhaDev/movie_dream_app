@@ -6,7 +6,7 @@ import {
 	View,
 	Image,
 } from 'react-native';
-import React, { useEffect, useState, createRef } from 'react';
+import React, { useEffect, useState, createRef,useCallback } from 'react';
 import {
 	ArrowLeftIcon,
 	EnvelopeIcon,
@@ -15,20 +15,27 @@ import {
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Sidenavpj = () => {
-	let [fontsLoaded] = useFonts({
+	const [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
-	});
+	  })
 	const navigation = useNavigation();
+    
 	const [userEmail, setUserEmail] = useState('');
 	const [userPassword, setUserPassword] = useState('');
+	const [userName, setUserName] =useState('');
 	const [loading, setLoading] = useState(false);
 	const [errortext, setErrortext] = useState('');
 	const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 	const emailInputRef = createRef();
 	const passwordInputRef = createRef();
 	const handleSubmitButton = () => {
+		if (!userName) {
+			alert('Please fill Name');
+			return;
+		}
 		if (!userEmail) {
 			alert('Please fill Email');
 			return;
@@ -39,6 +46,7 @@ const Sidenavpj = () => {
 		}
 		setLoading(true);
 		var dataToSend = {
+			name:userName,
 			email: userEmail,
 			password: userPassword,
 		};
@@ -50,11 +58,11 @@ const Sidenavpj = () => {
 			formBody.push(encodedKey + '=' + encodedValue);
 		}
 		formBody = formBody.join('&');
-		fetch('http://10.0.2.2:3000/api/user/register', {
+		fetch('https://outstanding-puce-nematode.cyclic.app/register', {
 			method: 'POST',
-			body: formBody,
+			body: JSON.stringify(dataToSend),
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+				'Content-Type': 'application/json',
 			},
 		})
 			.then((response) => response.json())
@@ -126,7 +134,10 @@ const Sidenavpj = () => {
 			</View>
 		);
 	}
+	console.log(isRegistraionSuccess)
 	return (
+		<LinearGradient colors={['#0d253f', '#01b4e4', '#90cea1']}
+		style={styles.brviewcolr}>
 		<View>
 			<View>
 				<Image
@@ -143,21 +154,50 @@ const Sidenavpj = () => {
 				/>
 			</View>
 			<View>
+			<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						marginHorizontal: 50,
+						borderWidth: 2,
+						marginTop: 20,
+						paddingHorizontal: 10,
+						borderColor: 'black',
+						borderRadius: 23,
+						paddingVertical: 2,
+						height: 40,
+					}}
+				>
+					<ShieldCheckIcon size="20" color="black" />
+					<TextInput
+						style={{
+							paddingHorizontal: 10,
+							height: 30,
+							width: 200,
+							fontFamily: 'Custom-Font',
+						}}
+						placeholder="Enter Your Name"
+						secureTextEntry={true}
+						ref={passwordInputRef}
+						onChangeText={(UserName) => setUserName(UserName)}
+						blurOnSubmit={false}
+					/>
+				</View>
 				<View
 					style={{
 						flexDirection: 'row',
 						alignItems: 'center',
 						marginHorizontal: 50,
 						borderWidth: 2,
-						marginTop: 50,
+						marginTop: 20,
 						paddingHorizontal: 10,
-						borderColor: '#01b4e4',
+						borderColor: 'black',
 						borderRadius: 23,
 						paddingVertical: 2,
 						height: 40,
 					}}
 				>
-					<EnvelopeIcon size="20" color="#01b4e4" />
+					<EnvelopeIcon size="20" color="black" />
 					<TextInput
 						style={{
 							paddingHorizontal: 10,
@@ -182,13 +222,13 @@ const Sidenavpj = () => {
 						borderWidth: 2,
 						marginTop: 20,
 						paddingHorizontal: 10,
-						borderColor: '#01b4e4',
+						borderColor: 'black',
 						borderRadius: 23,
 						paddingVertical: 2,
 						height: 40,
 					}}
 				>
-					<ShieldCheckIcon size="20" color="#01b4e4" />
+					<ShieldCheckIcon size="20" color="black" />
 					<TextInput
 						style={{
 							paddingHorizontal: 10,
@@ -200,44 +240,10 @@ const Sidenavpj = () => {
 						secureTextEntry={true}
 						ref={passwordInputRef}
 						onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-						onSubmitEditing={() =>
-							ageInputRef.current && ageInputRef.current.focus()
-						}
 						blurOnSubmit={false}
 					/>
 				</View>
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						marginHorizontal: 50,
-						borderWidth: 2,
-						marginTop: 20,
-						paddingHorizontal: 10,
-						borderColor: '#01b4e4',
-						borderRadius: 23,
-						paddingVertical: 2,
-						height: 40,
-					}}
-				>
-					<ShieldCheckIcon size="20" color="#01b4e4" />
-					<TextInput
-						style={{
-							paddingHorizontal: 10,
-							height: 30,
-							width: 200,
-							fontFamily: 'Custom-Font',
-						}}
-						placeholder="Confirm Your Password"
-						secureTextEntry={true}
-						ref={passwordInputRef}
-						onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-						onSubmitEditing={() =>
-							ageInputRef.current && ageInputRef.current.focus()
-						}
-						blurOnSubmit={false}
-					/>
-				</View>
+				
 				{errortext != '' ? (
 					<Text style={styles.errorTextStyle}>{errortext}</Text>
 				) : null}
@@ -321,7 +327,7 @@ const Sidenavpj = () => {
 						<TouchableOpacity onPress={() => navigation.navigate('sidenavp')}>
 							<Text
 								style={{
-									color: '#01b4e4',
+									color: '#fff',
 									fontSize: 18,
 									fontWeight: '600',
 									fontFamily: 'Custom-Font',
@@ -334,9 +340,18 @@ const Sidenavpj = () => {
 				</View>
 			</View>
 		</View>
+		</LinearGradient>
 	);
 };
 
 export default Sidenavpj;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	brviewcolr: {
+		width: '100%',
+		height: '100%',
+		flex: 1,
+		justifyContent: 'center',
+		alignSelf: 'center',
+	},
+});

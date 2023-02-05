@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-console.reportErrorsAsExceptions = false;
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Homemaga from './Homemaga';

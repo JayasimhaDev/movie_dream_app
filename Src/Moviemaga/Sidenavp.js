@@ -15,13 +15,12 @@ import {
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Sidenavp = () => {
-	let [fontsLoaded] = useFonts({
-		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
-	});
-	 const navigation = useNavigation();
-	 const [userEmail, setUserEmail] = useState('');
+
+	    const navigation = useNavigation();
+	    const [userEmail, setUserEmail] = useState('');
 		const [userPassword, setUserPassword] = useState('');
 		const [loading, setLoading] = useState(false);
 		const [errortext, setErrortext] = useState('');
@@ -47,22 +46,22 @@ formBody.push(encodedKey + '=' + encodedValue);
 }
 formBody = formBody.join('&');
 
-fetch('http://localhost:3000/api/user/login', {
+fetch('https://outstanding-puce-nematode.cyclic.app/login', {
 method: 'POST',
-body: formBody,
+body:JSON.stringify(dataToSend),
 headers: {
-'Content-Type':
-'application/x-www-form-urlencoded;charset=UTF-8',
+'Content-Type':'application/json',
 },
 })
 .then((response) => response.json())
 .then((responseJson) => {
 setLoading(false);
 console.log(responseJson);
-if (responseJson.status === 'success') {
-AsyncStorage.setItem('user_id', responseJson.data.email);
-console.log(responseJson.data.email);
-navigation.replace('DrawerNavigationRoutes');
+let array=responseJson;
+if (Array.isArray(array)) {
+// localStorage.setItem('user_id', responseJson[0].email);
+console.log(responseJson[0].email);
+navigation.navigate('AppNavigation');
 } else {
 setErrortext(responseJson.msg);
 console.log('Please check your email id or password');
@@ -74,34 +73,15 @@ console.error(error);
 });
 };
 
+let [fontsLoaded] = useFonts({
+	'Custom-Font': require('../Assests/Poppins-Light.ttf'),
+});
+if (!fontsLoaded) {
+	return null;
+  }
 	return (
-		<View>
-			<View
-				style={{
-					padding: 10,
-					alignSelf: 'center',
-					textAlign: 'center',
-				}}
-			>
-				{/* <TouchableOpacity
-					onPress={() => {
-						navigation.navigate('movielist');
-					}}
-				>
-					<ArrowLeftIcon size="30" color="#01b4e4" />
-				</TouchableOpacity> */}
-				<Text
-					style={{
-						fontFamily: 'Custom-Font',
-						fontSize: 30,
-						color: '#01b4e4',
-						fontWeight: '600',
-						textAlign: 'center',
-					}}
-				>
-					Welcome to Movie Dream
-				</Text>
-			</View>
+		<LinearGradient colors={['#0d253f', '#01b4e4', '#90cea1']} style={styles.brviewcolr}>
+		<View> 
 			<View>
 				<Image
 					style={{
@@ -116,6 +96,25 @@ console.error(error);
 					}}
 				/>
 			</View>
+			<View
+				style={{
+					padding: 10,
+					alignSelf: 'center',
+					textAlign: 'center',
+				}}>
+
+				<Text
+					style={{
+						fontFamily: 'Custom-Font',
+						fontSize: 25,
+						color: '#fff',
+						fontWeight: '600',
+						textAlign: 'center',
+					}}
+				>
+					Welcome to Movie Dream
+				</Text>
+			</View>
 			<View>
 				<View
 					style={{
@@ -125,13 +124,13 @@ console.error(error);
 						borderWidth: 2,
 						marginTop: 50,
 						paddingHorizontal: 10,
-						borderColor: '#01b4e4',
+						borderColor: 'black',
 						borderRadius: 23,
 						paddingVertical: 2,
 						height: 40,
 					}}
 				>
-					<EnvelopeIcon size="20" color="#01b4e4" />
+					<EnvelopeIcon size="20" color="black" />
 					<TextInput
 						style={{
 							paddingHorizontal: 10,
@@ -155,13 +154,14 @@ console.error(error);
 						borderWidth: 2,
 						marginTop: 20,
 						paddingHorizontal: 10,
-						borderColor: '#01b4e4',
+						borderColor: 'black',
 						borderRadius: 23,
 						paddingVertical: 2,
 						height: 40,
+						fontFamily: 'Custom-Font',
 					}}
 				>
-					<ShieldCheckIcon size="20" color="#01b4e4" />
+					<ShieldCheckIcon size="20" color="black" />
 					<TextInput
 						style={{
 							paddingHorizontal: 10,
@@ -195,10 +195,10 @@ console.error(error);
 							alignSelf: 'center',
 							backgroundColor: '#01b4e4',
 						}}
-						onPress={() => {
-							navigation.navigate('appnavigation');
-						}}
-						// onPress={handleSubmitPress}
+						// onPress={() => {
+						// 	navigation.navigate('appnavigation');
+						// }}
+						onPress={handleSubmitPress}
 						>
 						<Text
 							style={{
@@ -262,7 +262,7 @@ console.error(error);
 						<TouchableOpacity onPress={() => navigation.navigate('sidenavpj')}>
 							<Text
 								style={{
-									color: '#01b4e4',
+									color: '#fff',
 									fontSize: 18,
 									fontWeight: '600',
 									fontFamily: 'Custom-Font',
@@ -275,9 +275,18 @@ console.error(error);
 				</View>
 			</View>
 		</View>
+		</LinearGradient>
 	);
 };
 
 export default Sidenavp;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	brviewcolr: {
+		width: '100%',
+		height: '100%',
+		flex: 1,
+		justifyContent: 'center',
+		alignSelf: 'center',
+	},
+});

@@ -13,6 +13,7 @@ import React ,{ useState, useEffect} from 'react'
 import { ArrowDownCircleIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon, FilmIcon, HandThumbUpIcon, PlayCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+import { Linking } from 'react-native';
 
 
 const Moviebnrp = ({navigation,route}) => {
@@ -25,24 +26,26 @@ const Moviebnrp = ({navigation,route}) => {
 	const [singmovie, setSingmovie] = useState([]);
 	const [genres,setGenres]=useState([]);
 	const [prodcom, setProdcom]=useState([]);
+	const [cast, setCast] =useState([])
 	const [backr, setBackr] = useState(route.params.setbackr);
 	const Singlefilm = async (id) => {
 		const response = await fetch(
-			`https://api.themoviedb.org/3/${route.params.type}/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US`
+			`https://api.themoviedb.org/3/${route.params.type}/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&append_to_response=credits`
 		);
 		const data = await response.json();
 
 		setGenres(data.genres)
+		
 		setProdcom(data.production_companies)
+		setCast(data.credits.cast)
 		return setSingmovie(data);
 	};
-	
-
-
 	useEffect(() => {
-		Singlefilm(route.params.id,);
+		Singlefilm(route.params.id);
 	}, []);
-	// console.log(route.params);
+   const [arrayte, setArrayte] =useState(route.params.array);
+
+
 	return (
 		<View style={{ flex: 1 }}>
 			{/* <StatusBar  /> */}
@@ -53,6 +56,7 @@ const Moviebnrp = ({navigation,route}) => {
 							onPress={() =>
 								navigation.navigate('toprated', {
 									name: 'Top Rated',
+									type: 'movie',
 									id: route.params.id,
 								})
 							}
@@ -260,6 +264,7 @@ const Moviebnrp = ({navigation,route}) => {
 							alignSelf: 'center',
 							textAlign: 'center',
 						}}
+						onPress={() => setPlaymovie(true)}
 					>
 						<FilmIcon size="35" color="#01b4e4" />
 						<Text
@@ -273,27 +278,6 @@ const Moviebnrp = ({navigation,route}) => {
 							}}
 						>
 							Trailer
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={{
-							justifyContent: 'center',
-							alignItems: 'center',
-							alignSelf: 'center',
-							textAlign: 'center',
-						}}
-						onPress={() => setPlaymovie(true)}
-					>
-						<PlayCircleIcon size="35" color="#01b4e4" />
-						<Text
-							style={{
-								fontFamily: 'Custom-Font',
-								fontSize: 13,
-								fontWeight: '600',
-								color: '#0d253f',
-							}}
-						>
-							Play
 						</Text>
 					</TouchableOpacity>
 					<Modal visible={playmovie} transparent={true}>
@@ -362,6 +346,44 @@ const Moviebnrp = ({navigation,route}) => {
 							alignSelf: 'center',
 							textAlign: 'center',
 						}}
+						onPress={()=>{Linking.openURL(`https://www.imdb.com/title/${singmovie.imdb_id}/`)}}
+					>
+						<Text
+							style={{
+								fontFamily: 'Custom-Font',
+								fontSize: 10,
+								fontWeight: '600',
+								color: '#01b4e4',
+								borderColor:"#01b4e4",
+								borderWidth:2,
+								padding:2,
+								textAlign:"center",
+                                borderRadius:5,
+								marginTop:4,
+							}}
+						>
+							IMDB
+						</Text>
+						<Text
+							style={{
+								fontFamily: 'Custom-Font',
+								fontSize: 13,
+								fontWeight: '600',
+								color: '#0d253f',
+								marginTop:7,
+							}}
+						>
+							IMDb
+						</Text>
+					</TouchableOpacity>
+					
+					<TouchableOpacity
+						style={{
+							justifyContent: 'center',
+							alignItems: 'center',
+							alignSelf: 'center',
+							textAlign: 'center',
+						}}
 					>
 						<CheckCircleIcon size="35" color="#01b4e4" />
 						<Text
@@ -403,23 +425,39 @@ const Moviebnrp = ({navigation,route}) => {
 							textAlign: 'center',
 						}}
 					>
-						<ArrowDownCircleIcon size="35" color="#01b4e4" />
+						<Text
+							style={{
+								fontFamily: 'Custom-Font',
+								fontSize: 10,
+								fontWeight: '600',
+								color: '#01b4e4',
+								borderColor:"#01b4e4",
+								borderWidth:2,
+								padding:2,
+								textAlign:"center",
+                                borderRadius:5,
+								marginTop:4,
+							}}
+						>
+							{singmovie.popularity}
+						</Text>
 						<Text
 							style={{
 								fontFamily: 'Custom-Font',
 								fontSize: 13,
 								fontWeight: '600',
+								marginTop:8,
 								color: '#0d253f',
 								textAlign: 'center',
 							}}
 						>
-							Download
+							Popularity
 						</Text>
 					</TouchableOpacity>
 				</View>
 				<View>
 					<View>
-						{prodcom.map((item) => {
+						{prodcom===undefined? null: prodcom.map((item) => {
 							return (
 								<View
 									style={{
@@ -479,6 +517,101 @@ const Moviebnrp = ({navigation,route}) => {
 						})}
 					</View>
 					<View>
+					<Text style={{
+								fontFamily: 'Custom-Font',
+								fontSize: 15,
+								color: '#01b4e4',
+								fontWeight: '600',
+								paddingLeft:10,
+								paddingBottom:5,
+							}}>Movie Cast</Text>
+					<FlatList
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						data={cast}
+						keyExtractor={(val) => val.id}
+						renderItem={({ item }) => {
+							return (
+								<TouchableOpacity
+									style={{
+										width: 114,
+										height: 150,
+										padding: 5,
+										justifyContent: 'center',
+										textAlign: 'center',
+										marginHorizontal: 3,
+										alignSelf: 'center',
+										borderRadius: 10,
+										shadowColor: 'gray',
+										shadowOpacity: 0.26,
+										shadowOffset: { width: 0, height: 1 },
+										shadowRadius: 10,
+										elevation: 3,
+										backgroundColor: '#fff',
+										marginBottom: 4,
+									}}
+									// onPress={() =>
+									// 	navigation.navigate('papularprp', {
+									// 		id: item.id,
+									// 		array: arrayte,
+									// 		setBackp: 2,
+									// 	})
+									// }
+								>
+									<Image
+										source={{ uri: baseUrl + item.profile_path }}
+										style={{
+											width: 90,
+											height: 90,
+											borderRadius:10,
+											alignSelf: 'center',
+										}}
+										resizeMode="cover"
+									/>
+									<Text
+										ellipsizeMode="tail"
+										numberOfLines={1}
+										style={{
+											fontFamily: 'Custom-Font',
+											fontSize: 13,
+											color: '#0d253f',
+											fontWeight: '600',
+											
+										}}
+									>
+										{item.name}
+									</Text>
+									<Text
+										ellipsizeMode="tail"
+										numberOfLines={1}
+										style={{
+											fontFamily: 'Custom-Font',
+											fontSize: 13,
+											color: '#0d253f',
+											fontWeight: '600',
+											
+										}}
+									>
+										{item.known_for_department}
+									</Text>
+									{/* <Text
+										ellipsizeMode="tail"
+										numberOfLines={1}
+										style={{
+											fontFamily: 'Custom-Font',
+											fontSize: 13,
+											color: '#0d253f',
+											fontWeight: '600',
+										}}
+									>
+										{item.original_name}
+									</Text> */}
+								</TouchableOpacity>
+							);
+						}}
+					/>
+					</View>
+					<View>
 						<View
 							style={{
 								flexDirection: 'row',
@@ -500,7 +633,7 @@ const Moviebnrp = ({navigation,route}) => {
 						<FlatList
 							horizontal
 							showsHorizontalScrollIndicator={false}
-							data={route.params.array}
+							data={arrayte}
 							keyExtractor={(item) => item.id}
 							renderItem={({ item }) => {
 								return (
