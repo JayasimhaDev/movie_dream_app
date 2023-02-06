@@ -72,31 +72,15 @@ const Navbar = () => {
 		  alert(error.message);
 		}
 	  };
-      
 	  const backActionHandler = () => {
-		Alert.alert("Alert!", "Are you sure you want to go back?", [
-		  {
-			text: "Cancel",
-			onPress: () => null,
-			style: "cancel"
-		  },
-		  { text: "YES", onPress:() => BackHandler.exitApp()
-		  ()}
-		]);
-		return true;
+		   BackHandler.exitApp();
+		   setUserpg(false);
 	  };
-	  useEffect(() => {
-		BackHandler.addEventListener("hardwareBackPress", backActionHandler);
-		return () =>
-		  BackHandler.removeEventListener("hardwareBackPress", backActionHandler);
-	  }, []);
-	
 	const [userpg, setUserpg]=useState(false);
 	const [about, setAbout]=useState(false);
 	const [privey, setPrivey] =useState(false);
 	return (
 		<View>
-			{/* <StatusBar  /> */}
 			<View
 				style={{
 					flexDirection: 'row',

@@ -1,6 +1,5 @@
 {
   "expo": {
-   
     "name": "jayaapp",
     "slug": "jayaapp",
     "version": "1.0.0",
@@ -25,18 +24,27 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.jayanaga.jayaapp"
     },
     "web": {
       "favicon": "./assets/facebook-icon.png"
     },
-     "plugins": [
+    "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d1b5baee-d141-4866-affb-141056afb50d"
+      }
+    }
   }
 }
