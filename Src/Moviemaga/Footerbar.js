@@ -110,7 +110,7 @@ const Footerbar = () => {
 							alignSelf: 'center',
 						}}
 					>
-						Live TV
+						Chat Box
 					</Text>
 				</TouchableOpacity>
 			</View>

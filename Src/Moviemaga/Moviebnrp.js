@@ -4,15 +4,13 @@ import {
 	Text,
 	View,
 	FlatList,
-	Touchable,
 	TouchableOpacity,
 	ScrollView,
 	Modal,
 } from 'react-native';
 import React ,{ useState, useEffect} from 'react'
-import { ArrowDownCircleIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon, FilmIcon, HandThumbUpIcon, PlayCircleIcon, XCircleIcon } from 'react-native-heroicons/outline';
+import {  ArrowLeftIcon, CheckCircleIcon,  FilmIcon, HandThumbUpIcon,  XCircleIcon } from 'react-native-heroicons/outline';
 import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
 import { Linking } from 'react-native';
 
 
@@ -28,24 +26,24 @@ const Moviebnrp = ({navigation,route}) => {
 	const [prodcom, setProdcom]=useState([]);
 	const [cast, setCast] =useState([])
 	const [backr, setBackr] = useState(route.params.setbackr);
+	// const [usid, setUsid]=useState(route.params.id)
+	
 	const Singlefilm = async (id) => {
 		const response = await fetch(
 			`https://api.themoviedb.org/3/${route.params.type}/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&append_to_response=credits`
 		);
 		const data = await response.json();
-
 		setGenres(data.genres)
-		
 		setProdcom(data.production_companies)
 		setCast(data.credits.cast)
 		return setSingmovie(data);
 	};
 	useEffect(() => {
 		Singlefilm(route.params.id);
+		
 	}, []);
    const [arrayte, setArrayte] =useState(route.params.array);
-
-
+ 
 	return (
 		<View style={{ flex: 1 }}>
 			{/* <StatusBar  /> */}
@@ -116,7 +114,7 @@ const Moviebnrp = ({navigation,route}) => {
 					) : null}
 					<Image
 						source={{
-							uri: `https://image.tmdb.org/t/p/w500/${singmovie.backdrop_path}`,
+							uri: `https://image.tmdb.org/t/p/original/${singmovie.backdrop_path}`,
 						}}
 						style={{ width: '100%', height: 250 }}
 						// resizeMode="contain"
@@ -534,8 +532,8 @@ const Moviebnrp = ({navigation,route}) => {
 							return (
 								<TouchableOpacity
 									style={{
-										width: 114,
-										height: 150,
+										width: 84,
+										height: 120,
 										padding: 5,
 										justifyContent: 'center',
 										textAlign: 'center',
@@ -550,19 +548,20 @@ const Moviebnrp = ({navigation,route}) => {
 										backgroundColor: '#fff',
 										marginBottom: 4,
 									}}
-									// onPress={() =>
-									// 	navigation.navigate('papularprp', {
-									// 		id: item.id,
-									// 		array: arrayte,
-									// 		setBackp: 2,
-									// 	})
-									// }
+									onPress={() =>
+										navigation.navigate('papularprp', {
+											id: item.id,
+											array: arrayte,
+											sub: item.known_for,
+											setBackp: 2,
+										})
+									}
 								>
 									<Image
 										source={{ uri: baseUrl + item.profile_path }}
 										style={{
-											width: 90,
-											height: 90,
+											width: 70,
+											height: 70,
 											borderRadius:10,
 											alignSelf: 'center',
 										}}

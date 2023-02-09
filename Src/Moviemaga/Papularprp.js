@@ -15,7 +15,6 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 
-
 const Papularprp = ({navigation,route}) => {
 	let [fontsLoaded] = useFonts({
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
@@ -26,17 +25,30 @@ const Papularprp = ({navigation,route}) => {
   const [backp, setBackp] =useState(route.params.setBackp)
 	const paplryfetch= async(id) =>{
 		const response = await fetch(
-			`https://api.themoviedb.org/3/person/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US`
+			`https://api.themoviedb.org/3/person/${id}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&append_to_response=known_for`
 		);
 		const data =  await response.json();
 		setRoutary(route.params.sub);
 		return setPaplrary(data);
 	}
-	
 	useEffect(() => {
 		paplryfetch(route.params.id)
 	}, []);
      
+	 const [populaid, setPopulaid] = useState([]);
+	 const [bkrpst, setBkrpst]=useState([])
+	 const popularMd = async (id) => {
+		 const respone = await fetch(
+			 `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US`
+		 );
+		 const data = await respone.json();
+		 setBkrpst(data.cast);
+		 return setPopulaid(data);
+	 };
+	 useEffect(() => {
+		 popularMd(route.params.id);
+	 }, []);
+    
 	return (
 		<ScrollView style={{ flex: 1 }}>
 			{/* <StatusBar  /> */}
@@ -57,6 +69,7 @@ const Papularprp = ({navigation,route}) => {
 						onPress={() =>
 							navigation.navigate('movielist', {
 								name: 'Popular Starts',
+								array:bkrpst,
 							})
 						}
 					>
@@ -68,6 +81,7 @@ const Papularprp = ({navigation,route}) => {
 						onPress={() =>
 							navigation.navigate('papularp', {
 								name: 'Popular Starts',
+								array:bkrpst,
 							})
 						}
 					>
@@ -80,6 +94,7 @@ const Papularprp = ({navigation,route}) => {
 							navigation.navigate('moviebnrp', {
 								name: 'Popular Starts',
 								array:route.params.array,
+								array:bkrpst,
 								
 							})
 						}
@@ -203,7 +218,7 @@ const Papularprp = ({navigation,route}) => {
 			</View>
 			<FlatList
 				horizontal
-				data={routary}
+				data={bkrpst}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
 					return (
@@ -212,15 +227,14 @@ const Papularprp = ({navigation,route}) => {
 								style={{
 									marginHorizontal: 3,
 								}}
-								onPress={() =>
+								onPress={() =>{
 									navigation.navigate('moviebnrp', {
-										id: item.id,
-										array: routary,
-										pro: item.production_companies,
+										id: item.id,	
+										array:bkrpst,
 										type: item.media_type,
 										setbackr: 3,
 									})
-								}
+								}}
 							>
 								<Image
 									source={{ uri: baseUrl + item.poster_path }}

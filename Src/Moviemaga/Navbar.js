@@ -716,7 +716,7 @@ const Navbar = () => {
 					return (
 						<View
 							style={{
-								paddingLeft: 10,
+								paddingLeft: 5,
 								paddingRight: 5,
 							}}
 						>
@@ -730,10 +730,15 @@ const Navbar = () => {
 							>
 								<Text
 									style={{
-										fontSize: 18,
+										fontSize: 13,
 										color: '#0d253f',
 										fontFamily: 'Custom-Font',
 										fontWeight: '650',
+										borderColor: 'black',
+										borderWidth: 1,
+										borderRadius: 3,
+										padding:5,
+										height:25,
 									}}
 								>
 									{item.item.name}

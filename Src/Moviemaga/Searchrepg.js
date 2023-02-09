@@ -48,7 +48,7 @@ const Searchrepg = () => {
 		fetchMovies(search);
 	}
 
-	
+	console.log(movies);
 	return (
 		<View>
 			{/* <StatusBar  /> */}

@@ -199,7 +199,7 @@ const Movielist = ({ navigation }) => {
 								<TouchableOpacity
 									style={{
 										width: 84,
-										height: 100,
+										height: 120,
 										padding: 5,
 										justifyContent: 'center',
 										textAlign: 'center',
@@ -227,8 +227,8 @@ const Movielist = ({ navigation }) => {
 									<Image
 										source={{ uri: baseUrl + item.profile_path }}
 										style={{
-											width: 50,
-											height: 50,
+											width: 70,
+											height: 70,
 											borderRadius: 10,
 											alignSelf: 'center',
 										}}

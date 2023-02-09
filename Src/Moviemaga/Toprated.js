@@ -25,7 +25,7 @@ const Toprated = ({ navigation, route},id) => {
 	const topRated = async (pgn) => {
 		setIsLoading(true);
 		const respone = await fetch(
-			`https://api.themoviedb.org/3/${type}/${msarray}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=${pgn}`
+			`https://api.themoviedb.org/3/${type}/${msarray}?api_key=04267d8d72061cab657e5c6f5a9737f8&language=en-US&page=${pgn}&append_to_response=media_type`
 		);
 		const data = await respone.json();
 			setTop([...top, ...data.results]);
@@ -50,7 +50,7 @@ const Toprated = ({ navigation, route},id) => {
 	useEffect(() => {
 		topRated(pageno);
 	}, [pageno]);
-
+	
 	return (
 		<View>
 			{/* <StatusBar /> */}
@@ -81,7 +81,7 @@ const Toprated = ({ navigation, route},id) => {
 					numColumns={3}
 					showsVerticalScrollIndicator={false}
 					columnWrapperStyle={{ justifyContent: 'space-around' }}
-					initialNumToRender={10}
+					initialNumToRender={1}
 					refreshing={isLoading}
 					ListFooterComponent={renderLoder}
 					data={top}
@@ -94,15 +94,14 @@ const Toprated = ({ navigation, route},id) => {
 									marginVertical: 2,
 									flexGrow: 1,
 								}}
-								onPress={() =>
-									navigation.navigate('moviebnrp', {
+								onPress={() =>{
+									navigation.navigate('moviebnrp',{
 										id: item.id,
 										array: top,
-										title:item.title,
-										type: 'movie',
+										type: route.params.type,
 										setbackr: 1,
 									})
-								}
+								}}
 							>
 								<Image
 									source={{ uri: baseUrl + item.poster_path }}

@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	View,
 	Image,
+	Alert,
 } from 'react-native';
 import React, { useEffect, useState, createRef } from 'react';
 import {
@@ -59,17 +60,16 @@ setLoading(false);
 console.log(responseJson);
 let array=responseJson;
 if (Array.isArray(array)) {
-// localStorage.setItem('user_id', responseJson[0].email);
 console.log(responseJson[0].email);
 navigation.navigate('AppNavigation');
 } else {
 setErrortext(responseJson.msg);
-console.log('Please check your email id or password');
+Alert.alert('Please check your email id or password');
 }
 })
 .catch((error) => {
 setLoading(false);
-console.error(error);
+Alert.alert(error);
 });
 };
 
@@ -195,10 +195,10 @@ if (!fontsLoaded) {
 							alignSelf: 'center',
 							backgroundColor: '#01b4e4',
 						}}
-						// onPress={() => {
-						// 	navigation.navigate('appnavigation');
-						// }}
-						onPress={handleSubmitPress}
+						onPress={() => {
+							navigation.navigate('AppNavigation');
+						}}
+						// onPress={handleSubmitPress}
 						>
 						<Text
 							style={{

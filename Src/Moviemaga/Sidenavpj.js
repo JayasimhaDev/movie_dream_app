@@ -5,6 +5,7 @@ import {
 	TouchableOpacity,
 	View,
 	Image,
+	Alert
 } from 'react-native';
 import React, { useEffect, useState, createRef,useCallback } from 'react';
 import {
@@ -67,74 +68,19 @@ const Sidenavpj = () => {
 		})
 			.then((response) => response.json())
 			.then((responseJson) => {
-				setLoading(false);
-				console.log(responseJson);
-				if (responseJson.status === 'success') {
-					setIsRegistraionSuccess(true);
-					console.log('Registration Successful. Please Login to proceed');
-				} else {
-					setErrortext(responseJson.msg);
-				}
+				Alert.alert(
+					'Success!',
+					'User was successfully created!',
+				  );
+				  return true;
 			})
 			.catch((error) => {
-				setLoading(false);
-				console.error(error);
-			});
+				Alert.alert('Error!', error.message);
+				return false;
+			  });
 	};
-	if (isRegistraionSuccess) {
-		return (
-			<View
-				style={{
-					flex: 1,
-					backgroundColor: '#307ecc',
-					justifyContent: 'center',
-				}}
-			>
-				<Image
-					source={{
-						uri: 'https://image.similarpng.com/very-thumbnail/2021/08/Green-check-mark-icon.png',
-					}}
-					style={{
-						height: 150,
-						resizeMode: 'contain',
-						alignSelf: 'center',
-					}}
-				/>
-				<Text
-					style={{
-						color: 'white',
-						textAlign: 'center',
-						fontSize: 18,
-						padding: 30,
-					}}
-				>
-					Registration Successful
-				</Text>
-				<TouchableOpacity
-					style={{
-						backgroundColor: '#7DE24E',
-						borderWidth: 0,
-						color: '#FFFFFF',
-						borderColor: '#7DE24E',
-						height: 40,
-						alignItems: 'center',
-						borderRadius: 30,
-						marginLeft: 35,
-						marginRight: 35,
-						marginTop: 20,
-						marginBottom: 20,
-					}}
-					activeOpacity={0.5}
-					onPress={() =>navigation.navigate('sidenavp')}
-				>
-					<Text style={{ color: '#FFFFFF', paddingVertical: 10, fontSize: 16 }}>
-						Login Now
-					</Text>
-				</TouchableOpacity>
-			</View>
-		);
-	}
-	console.log(isRegistraionSuccess)
+	
+	
 	return (
 		<LinearGradient colors={['#0d253f', '#01b4e4', '#90cea1']}
 		style={styles.brviewcolr}>

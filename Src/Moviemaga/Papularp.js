@@ -18,6 +18,7 @@ const Papularp = ({ navigation, route }) => {
 		'Custom-Font': require('../Assests/Poppins-Light.ttf'),
 	});
 	const baseUrl = 'https://image.tmdb.org/t/p/w500';
+	
 	const [topt, setTopt] = useState([]);
 	const [pageno, setPageno] = useState(1);
 	const [isLoading, setIsLoading]=useState(false);
@@ -32,7 +33,7 @@ const Papularp = ({ navigation, route }) => {
 		 setIsLoading(false);
 		 setPageno(pageno+1);
 	};
-
+// console.log(topt);
 	const renderData =()=>{
 		return isLoading ? (
      <View>
