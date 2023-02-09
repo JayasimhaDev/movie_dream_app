@@ -195,10 +195,10 @@ if (!fontsLoaded) {
 							alignSelf: 'center',
 							backgroundColor: '#01b4e4',
 						}}
-						onPress={() => {
-							navigation.navigate('AppNavigation');
-						}}
-						// onPress={handleSubmitPress}
+						// onPress={() => {
+						// 	navigation.navigate('AppNavigation');
+						// }}
+						onPress={handleSubmitPress}
 						>
 						<Text
 							style={{
